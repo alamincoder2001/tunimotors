@@ -89,16 +89,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="laicence_fee"> Laicence Fee</label>
+                        <label class="col-sm-4 control-label" for="license_fee"> License Fee</label>
                         <label class="col-sm-1 control-label">:</label>
                         <div class="col-sm-3">
-                        <input type="text" id="amount" required name="laicence_fee" value="<?php echo $edit->laicence_fee;?>" placeholder="Amount"
+                        <input type="text" id="amount" required name="license_fee" value="<?php echo $edit->license_fee;?>" placeholder="Amount"
                                    class="form-control"/>
                         </div>
-                        <label class="col-sm-1 control-label" for="laicence_cost"> cost:</label>
+                        <label class="col-sm-1 control-label" for="license_cost"> cost:</label>
                 
                         <div class="col-sm-2">
-                        <input type="text" id="amount" required name="laicence_cost" value="<?php echo $edit->laicence_cost;?>" placeholder="Amount"
+                        <input type="text" id="amount" required name="license_cost" value="<?php echo $edit->license_cost;?>" placeholder="Amount"
                                    class="form-control"/>
                         </div>
                     </div>
@@ -116,14 +116,6 @@
                                    class="form-control"/>
                         </div>
                     </div>
-                     <!-- <div class="form-group">
-                        <label class="col-sm-4 control-label" for="others_fees"> Others Fees</label>
-                        <label class="col-sm-1 control-label">:</label>
-                        <div class="col-sm-5">
-                        <input type="text" id="others_fees"  name="others_fees" value="<?php echo $edit->others_fees;?>" placeholder="Amount"
-                                   class="form-control"/>
-                        </div>
-                    </div> -->
                 </div>
 
 
@@ -132,36 +124,36 @@
                         <label class="col-sm-4 control-label" for="cus_name"> Type </label>
                         <label class="col-sm-1 control-label">:</label>
                         <div class="col-sm-6">
-                          
-                            <?php if ($edit->bike_dc_type == 'R') {?>
-                                <input type="checkbox" id="registration" name="bike_dc_type" value="<?php echo $edit->bike_dc_type; ?>" checked>
-                                <label for="registration"> Registration Document</label><br>
+
+                            <?php if ($edit->registration_dc_type == 'R') {?>
+                                <input type="checkbox" id="bike" name="registration_dc_type"  value="<?php echo $edit->registration_dc_type; ?>" checked>
+                                <label for="bike"> Registration Document </label><br>
                             <?php } else {?>
-                                <input type="checkbox" id="registration" name="bike_dc_type" value="R" >
-                                <label for="registration"> Registration Document</label><br>
+                                <input type="checkbox" id="bike" name="registration_dc_type" value="R">
+                                <label for="bike"> Registration Document </label><br>
                             <?php }?>
 
-                            <?php if ($edit->registration_dc_type == 'B') {?>
-                                <input type="checkbox" id="bike" name="registration_dc_type"  value="<?php echo $edit->registration_dc_type; ?>" checked>
-                                <label for="bike"> Driving Document</label><br>
+                            <?php if ($edit->bike_lr_type == 'LR') {?>
+                                <input type="checkbox" id="Learner" name="bike_lr_type" value="<?php echo $edit->bike_lr_type; ?>" checked>
+                                <label for="Learner"> Learner </label><br>
                             <?php } else {?>
-                                <input type="checkbox" id="bike" name="registration_dc_type" value="B">
-                                <label for="bike"> Driving Document</label><br>
+                                <input type="checkbox" id="Learner" name="bike_lr_type" value="LR" >
+                                <label for="Learner"> Learner </label><br>
                             <?php }?>
 
                             <?php if ($edit->bike_dl_type == 'L') {?>
-                                <input type="checkbox" id="laicence" name="bike_dl_type"  value="<?php echo $edit->bike_dl_type; ?>" checked>
-                                <label for="laicence"> Driving Laicence</label><br>
+                                <input type="checkbox" id="license" name="bike_dl_type"  value="<?php echo $edit->bike_dl_type; ?>" checked>
+                                <label for="laicence"> Driving License</label><br>
                             <?php } else {?>
-                                <input type="checkbox" id="laicence" name="bike_dl_type" value="B">
-                                <label for="laicence"> Driving Laicence</label><br>
+                                <input type="checkbox" id="license" name="bike_dl_type" value="B">
+                                <label for="laicence"> Driving License</label><br>
                             <?php }?>
 
                             <?php if ($edit->bike_nt_type == 'T') {?>
-                                <input type="checkbox" id="laicence" name="bike_nt_type"  value="<?php echo $edit->bike_nt_type; ?>" checked>
+                                <input type="checkbox" id="license" name="bike_nt_type"  value="<?php echo $edit->bike_nt_type; ?>" checked>
                                 <label for="laicence"> Name Transfer</label><br>
                             <?php } else {?>
-                                <input type="checkbox" id="laicence" name="bike_nt_type" value="B">
+                                <input type="checkbox" id="license" name="bike_nt_type" value="T">
                                 <label for="laicence"> Name Transfer</label><br>
                             <?php }?>
                         </div>

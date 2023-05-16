@@ -45,10 +45,11 @@ class Reg_statement extends CI_Controller
 						LEFT JOIN tbl_product p ON p.Product_SlNo = sd.Product_IDNo
 						LEFT JOIN tbl_salesmaster sm ON sm.SaleMaster_SlNo = sd.SaleMaster_IDNo
 						LEFT JOIN tbl_customer c ON c.Customer_SlNo = sm.SalseCustomer_IDNo
-						LEFT JOIN tbl_engine e ON e.salesID = sd.SaleMaster_IDNo
+						LEFT JOIN tbl_engine e ON e.salesID = sd.SaleDetails_SlNo
 						WHERE sd.Status = 'a'
+						and sd.SaleDetails_BranchId = ?
 						$clause
-						GROUP BY sd.SaleMaster_IDNo")->result();
+						GROUP BY sd.SaleMaster_IDNo", $this->brunch)->result();
 
 		echo json_encode($product);
 	}
@@ -110,12 +111,10 @@ class Reg_statement extends CI_Controller
 				"license_cost"         => $attr['license_cost'],
 				"transfer_fee"         => $attr['transfer_fee'],
 				"transfer_cost"        => $attr['transfer_cost'],
-				// "others_fees"          => $attr['others_fees'],
-				// "vat_dc_type"          => $attr['vat_dc_type'],
-				"bike_dc_type"         => $attr['bike_dc_type'],
+				"bike_lr_type"         => $attr['bike_lr_type'],
 				"bike_dl_type"         => $attr['bike_dl_type'],
-				// "bike_nt_type"         => $attr['bike_nt_type'],
-				// "registration_dc_type" => $attr['registration_dc_type'],
+				"bike_nt_type"         => $attr['bike_nt_type'],
+				"registration_dc_type" => $attr['registration_dc_type'],
 				"description"          => $attr['description'],
 				"addby"                => $attr['addby'],
 				"status"               => "a",
@@ -204,7 +203,6 @@ class Reg_statement extends CI_Controller
 	}
 	public function get_all_reg_statement()
 	{
-
 		$query = $this->db->query("SELECT 
 								p.Product_SlNo,
 								p.Product_Name,
@@ -213,13 +211,15 @@ class Reg_statement extends CI_Controller
 								c.Customer_Name,
 								c.Customer_SlNo,
 								e.chassisNo,
-								eg.*
+								eg.*,
+    							(SELECT eg.reg_fee+eg.driving_fee+eg.license_fee+eg.transfer_fee) as total_fee,
+    							(SELECT eg.reg_cost+eg.driving_cost+eg.license_cost+eg.transfer_cost) as total_cost,
+    							(select total_fee - total_cost) as profit
 								from tbl_reg_statement eg
 								left join tbl_customer c on c.Customer_SlNo = eg.customer_id
 								left join tbl_engine e on e.engine_id = eg.engine_id
 								left join tbl_product p on p.Product_SlNo = e.productId
-								where eg.Status = 'a'
-								and e.status = 'a'
+								where eg.status = 'a'
 							")->result();
 
 

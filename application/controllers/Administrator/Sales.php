@@ -129,9 +129,6 @@ class Sales extends CI_Controller {
             $salesId = $this->db->insert_id();
 
             foreach($data->cart as $cartProduct){
-            //     echo "<pre>";
-            //     print_r($cartProduct->Discount_amount);
-            // exit;
                 $saleDetails = array(
                     'SaleMaster_IDNo' => $salesId,
                     'Product_IDNo' => $cartProduct->productId,
@@ -151,7 +148,7 @@ class Sales extends CI_Controller {
                 $this->db->insert('tbl_saledetails', $saleDetails);
                 $detailId = $this->db->insert_id();
                
-                    $saleItem = $this->db->query("
+                $this->db->query("
                     update tbl_engine 
                     set status = 's', salesID = ?, salesPrice = ? 
                     where engine_id = ?

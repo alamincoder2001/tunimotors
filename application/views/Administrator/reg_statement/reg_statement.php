@@ -123,14 +123,16 @@
                         <label class="col-sm-4 control-label" for="cus_name"> Type </label>
                         <label class="col-sm-1 control-label">:</label>
                         <div class="col-sm-5">
-                            <input type="checkbox" id="registration" name="bike_dc_type" value="R">
-                            <label for="registration"> Registration Document</label><br>
-                            <input type="checkbox" id="bsp" name="registration_dc_type" value="B">
+                            <input type="checkbox" id="registration" name="registration_dc_type" value="R">
+                            <label for="registration"> Registration Document </label><br>
+                            <input type="checkbox" id="bsp" name="bike_dl_type" value="B">
                             <label for="bsp"> BSP </label><br>
+                            <input type="checkbox" id="learner" name="bike_lr_type" value="LR">
+                            <label for="learner"> Learner </label><br>
                             <input type="checkbox" id="license" name="bike_dl_type" value="L">
-                            <label for="license"> Driving License</label><br>
+                            <label for="license"> Driving License </label><br>
                             <input type="checkbox" id="transfer" name="bike_nt_type" value="T">
-                            <label for="transfer"> Name Transfer</label><br>
+                            <label for="transfer"> Name Transfer</label>
                         </div>
 
                     </div>
@@ -208,16 +210,14 @@
                         <th>engine & Chassis No</th>
                         <th>Registration fee</th>
                         <th>Driving fee</th>
-                        <th>Laicence fee</th>
+                        <th>License fee</th>
                         <th>Transfer fee</th>
-                        <!-- <th>Others fee</th> -->
-                        <th>total fee</th>
-                        <th>total Cost fee</th>
+                        <th>Total fee</th>
+                        <th>Total Cost fee</th>
                         <th>Profit</th>
-
                         <th>Driving</th>
                         <th>Registration</th>
-                        <th>Laicence</th>
+                        <th>License</th>
                         <th>Transfer</th>
                         <th class="actions">Action</th>
                     </tr>
@@ -281,106 +281,46 @@
 
 
     function getAllReg() {
-
         $.ajax({
-            type: "get",
             url: "<?= base_url(); ?>get_all_reg_statement",
-            dataType: 'json',
-            success: function(data) {
-                var options = 0;
-                var footer = 0;
-                var j = 1;
-
-                var totalFee = 0;
-                var totalProfit = 0;
-                var totalCost = 0;
-                var display = '';
-
-                for (let i = 0; i < data.length; i++) {
-                    const item = data[i];
-
-                    var total = (+item.driving_fee + +item.reg_fee + +item.others_fees + +item.laicence_fee + +item.transfer_fee);
-                    var cost = (+item.driving_cost + +item.reg_cost + +item.laicence_cost + +item.transfer_cost);
-                    var profit = total - cost;
-
-                    totalFee += total;
-                    totalCost += cost;
-                    totalProfit += profit;
-
-
-                    if (item.bike_dc_type == 'R') {
-                        display = "contents";
-                    } else {
-                        display = "none";
-                    }
-                    if (item.registration_dc_type == 'B') {
-                        display_r = "contents";
-                    } else {
-                        display_r = "none";
-                    }
-                    if (item.bike_dl_type == 'L') {
-                        display_l = "contents";
-                    } else {
-                        display_l = "none";
-                    }
-                    if (item.bike_nt_type == 'T') {
-                        display_t = "contents";
-                    } else {
-                        display_t = "none";
-                    }
-                    options += `
-                    <tr>
-                            <td>${j++}</td>
-                            <td>${item.Customer_Name}</td>
-                            <td>${item.Product_Name}</td>
-                            <td>${item.EngineNo}</td>
-                            <td>${item.reg_fee}</td>
-                            <td>${item.driving_fee}</td>
-                            <td>${item.laicence_fee}</td>
-                            <td>${item.transfer_fee}</td>
-                           
-                             <td>${total}</td>
-                             <td>${cost}</td>
-                             <td>${profit} </td>
-                             <td>  
-                                <i style="display:${display_r}" class=" green ace-icon fa fa-check-circle bigger-130"></i>
-                            </td>
-                            <td>  
-                                <i style="display:${display}" class=" green ace-icon fa fa-check-circle bigger-130"></i>
-                            </td>
-                            <td>  
-                                <i style="display:${display_l}" class=" green ace-icon fa fa-check-circle bigger-130"></i>
-                            </td>
-                            <td>  
-                                <i style="display:${display_t}" class=" green ace-icon fa fa-check-circle bigger-130"></i>
-                            </td>
-                            <td class="actions">
+            method: "GET",
+            dataType: "JSON",
+            success: res => {
+                $.each(res, (index, value) => {
+                    var raw = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${value.Customer_Name}</td>
+                            <td>${value.Product_Name}</td>
+                            <td>${value.EngineNo}-${value.chassisNo}</td>
+                            <td>${value.reg_fee}</td>
+                            <td>${value.driving_fee}</td>
+                            <td>${value.license_fee}</td>
+                            <td>${value.transfer_fee}</td>
+                            <td>${value.total_fee}</td>
+                            <td>${value.total_cost}</td>
+                            <td>${value.profit}</td>
+                            <td>${value.bike_lr_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
+                            <td>${value.registration_dc_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
+                            <td>${value.bike_dl_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
+                            <td>${value.bike_nt_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
+                            <td>
                                 <div class="hidden-sm hidden-xs action-buttons">
-                                
-                                  
-        
-                                    <a class="green  fancybox fancybox.ajax"
-                                       href="<?php echo base_url() ?>editRegStatement/${item.reg_id}">
+                                    <a class="green  fancybox fancybox.ajax" href="<?php echo base_url() ?>editRegStatement/${value.reg_id}">
                                         <i class="ace-icon fa fa-pencil bigger-130"></i>
                                     </a>
-                                    <a class="red" href="#" onclick="deleted(${item.reg_id})">
+                                    <a class="red" href="#" onclick="deleted(${value.reg_id})">
                                         <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                     </a>
                                 </div>
                             </td>
-                    </tr>
+                        </tr>
                     `;
-                }
-                options += `
-                     <tr style="font-weight:bold;">
-                        <td colspan="8" style="text-align:right;">Total</td>
-                        <td style="text-align:right;">${totalFee}</td>
-                        <td style="text-align:right;">${totalCost}</td>
-                        <td style="text-align:right;">${totalProfit}</td
-                    </tr>`;
-                $('.showResult').html(options);
+
+                    $(".showResult").append(raw);
+                })
             }
-        });
+        })
     }
 
     getAllReg();
@@ -432,6 +372,7 @@
                     return true;
                 } else {
                     alert("already Added");
+                    location.reload();
                 }
             }
         })
@@ -448,15 +389,15 @@
             data: $("#ValidateForm").serialize(),
             dataType: "JSON",
             success: function(data) {
-                console.log(data);
-                return
                 if (data.successMsg) {
                     alert(data.successMsg);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000)
                 }
                 if (data.errorMsg) {
                     alert(data.errorMsg);
                 }
-                // location.reload();
             }
         });
     }
