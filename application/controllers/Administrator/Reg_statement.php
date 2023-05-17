@@ -111,6 +111,7 @@ class Reg_statement extends CI_Controller
 				"license_cost"         => $attr['license_cost'],
 				"transfer_fee"         => $attr['transfer_fee'],
 				"transfer_cost"        => $attr['transfer_cost'],
+				"bike_bs_type"         => $attr['bike_bs_type'],
 				"bike_lr_type"         => $attr['bike_lr_type'],
 				"bike_dl_type"         => $attr['bike_dl_type'],
 				"bike_nt_type"         => $attr['bike_nt_type'],

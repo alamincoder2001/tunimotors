@@ -125,7 +125,7 @@
                         <div class="col-sm-5">
                             <input type="checkbox" id="registration" name="registration_dc_type" value="R">
                             <label for="registration"> Registration Document </label><br>
-                            <input type="checkbox" id="bsp" name="bike_dl_type" value="B">
+                            <input type="checkbox" id="bsp" name="bike_bs_type" value="B">
                             <label for="bsp"> BSP </label><br>
                             <input type="checkbox" id="learner" name="bike_lr_type" value="LR">
                             <label for="learner"> Learner </label><br>
@@ -206,8 +206,8 @@
                     <tr>
                         <th>SL.</th>
                         <th>Customer Name</th>
-                        <th>product Name</th>
-                        <th>engine & Chassis No</th>
+                        <th>Product Name</th>
+                        <th>Engine & Chassis No</th>
                         <th>Registration fee</th>
                         <th>Driving fee</th>
                         <th>License fee</th>
@@ -300,9 +300,9 @@
                             <td>${value.total_fee}</td>
                             <td>${value.total_cost}</td>
                             <td>${value.profit}</td>
-                            <td>${value.bike_lr_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
-                            <td>${value.registration_dc_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
                             <td>${value.bike_dl_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
+                            <td>${value.registration_dc_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
+                            <td>${value.bike_lr_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
                             <td>${value.bike_nt_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
                             <td>
                                 <div class="hidden-sm hidden-xs action-buttons">

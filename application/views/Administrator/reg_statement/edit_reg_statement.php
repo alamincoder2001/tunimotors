@@ -141,6 +141,14 @@
                                 <label for="Learner"> Learner </label><br>
                             <?php }?>
 
+                            <?php if ($edit->bike_bs_type == 'B') {?>
+                                <input type="checkbox" id="bsp" name="bike_bs_type" value="<?php echo $edit->bike_bs_type; ?>" checked>
+                                <label for="bsp"> BSP </label><br>
+                            <?php } else {?>
+                                <input type="checkbox" id="bsp" name="bike_bs_type" value="B" >
+                                <label for="bsp"> BSP </label><br>
+                            <?php }?>
+
                             <?php if ($edit->bike_dl_type == 'L') {?>
                                 <input type="checkbox" id="license" name="bike_dl_type"  value="<?php echo $edit->bike_dl_type; ?>" checked>
                                 <label for="laicence"> Driving License</label><br>
