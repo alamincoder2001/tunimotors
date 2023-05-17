@@ -1,10 +1,10 @@
 <div class="row">
 <div class="col-xs-12 col-md-12 col-lg-12" style="border-bottom:1px #ccc solid;">
 		<div class="form-group" style="margin-top:10px;">
-			<label class="col-sm-1 col-sm-offset-2 control-label no-padding-right" for="searchtype"> Search Type </label>
-			<div class="col-sm-3">
+			<label class="col-md-2 control-label no-padding-right" for="searchtype"> Search Type </label>
+			<div class="col-md-3">
 				<select class="chosen-select form-control" name="prod_id" id="prod_id" data-placeholder="Choose a Product...">
-					<option value="">  </option>
+					<option value=""></option>
 					<option value="All"> All </option>
 					<?php foreach($products as $product){ ?>
 					<option value="<?php echo $product->Product_SlNo; ?>"><?php echo $product->Product_Name; ?> - <?php echo $product->Product_Code; ?></option>
