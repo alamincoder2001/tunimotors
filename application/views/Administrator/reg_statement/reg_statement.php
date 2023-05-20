@@ -270,24 +270,25 @@
                 sDate: sDate,
                 eDate: eDate
             },
-            dataType: "HTML",
+            dataType: "json",
+            beforeSend: () => {
+                $(".showResult").html("");
+            },
             success: function(data) {
-                $(".showResult").html(data);
-
+                if (data.length > 0) {
+                    $.each(data, (index, value) => {
+                        Row(index, value);
+                    })
+                }else{
+                    $(".showResult").html(`<tr><td colspan="16">Not found data</td></tr>`);
+                }
             }
         });
 
     }
 
-
-    function getAllReg() {
-        $.ajax({
-            url: "<?= base_url(); ?>get_all_reg_statement",
-            method: "GET",
-            dataType: "JSON",
-            success: res => {
-                $.each(res, (index, value) => {
-                    var raw = `
+    function Row(index, value) {
+        var raw = `
                         <tr>
                             <td>${index + 1}</td>
                             <td>${value.Customer_Name}</td>
@@ -317,7 +318,21 @@
                         </tr>
                     `;
 
-                    $(".showResult").append(raw);
+        $(".showResult").append(raw);
+    }
+
+
+    function getAllReg() {
+        $.ajax({
+            url: "<?= base_url(); ?>get_all_reg_statement",
+            method: "GET",
+            dataType: "JSON",
+            beforeSend: () => {
+                $(".showResult").html("");
+            },
+            success: res => {
+                $.each(res, (index, value) => {
+                    Row(index, value);
                 })
             }
         })

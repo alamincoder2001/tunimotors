@@ -28,21 +28,24 @@ class Reg_statement_model extends CI_Model
             $clauses .= " and eg.date between '$form' and '$to'";
         }
 
-        $query = $this->db->query(" select p.Product_SlNo,
-		p.Product_Name,
+        $query = $this->db->query("select 
+            p.Product_SlNo,
+		    p.Product_Name,
             e.EngineNo,
             e.engine_id,
             c.Customer_Name,
             c.Customer_SlNo,
             e.chassisNo,
-            eg.*
+            eg.*,
+            (SELECT eg.reg_fee+eg.driving_fee+eg.license_fee+eg.transfer_fee) as total_fee,
+            (SELECT eg.reg_cost+eg.driving_cost+eg.license_cost+eg.transfer_cost) as total_cost,
+            (select total_fee - total_cost) as profit
             from tbl_reg_statement eg
-            INNER join tbl_customer c on c.Customer_SlNo = eg.customer_id
-            INNER join tbl_engine e on e.engine_id = eg.engine_id
-            INNER join tbl_product p on e.productId = p.Product_SlNo 
-            where eg.Status = 'a'
-            and e.status = 'a'
-        $clauses
+            left join tbl_customer c on c.Customer_SlNo = eg.customer_id
+            left join tbl_engine e on e.engine_id = eg.engine_id
+            left join tbl_product p on e.productId = p.Product_SlNo 
+            where eg.Status = 'a' 
+            $clauses
        ")->result();
 
         if ($query) {
