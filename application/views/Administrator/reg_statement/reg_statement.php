@@ -213,7 +213,7 @@
                         <th>License fee</th>
                         <th>Transfer fee</th>
                         <th>Total fee</th>
-                        <th>Total Cost fee</th>
+                        <th>Total Cost</th>
                         <th>Profit</th>
                         <th>Driving</th>
                         <th>Registration</th>
@@ -224,9 +224,10 @@
                 </thead>
 
                 <tbody class="showResult">
-
                 </tbody>
+
                 <tfoot class="total">
+                    
                 </tfoot>
             </table>
         </div>
@@ -279,7 +280,7 @@
                     $.each(data, (index, value) => {
                         Row(index, value);
                     })
-                }else{
+                } else {
                     $(".showResult").html(`<tr><td colspan="16">Not found data</td></tr>`);
                 }
             }
@@ -334,6 +335,28 @@
                 $.each(res, (index, value) => {
                     Row(index, value);
                 })
+
+                let reg_fee = res.reduce((acc, pre) => {return acc + + parseFloat(pre.reg_fee)}, 0).toFixed(2);
+                let driving_fee = res.reduce((acc, pre) => {return acc + + parseFloat(pre.driving_fee)}, 0).toFixed(2);
+                let license_fee = res.reduce((acc, pre) => {return acc + + parseFloat(pre.license_fee)}, 0).toFixed(2);
+                let transfer_fee = res.reduce((acc, pre) => {return acc + + parseFloat(pre.transfer_fee)}, 0).toFixed(2);
+                let total_fee = res.reduce((acc, pre) => {return acc + + parseFloat(pre.total_fee)}, 0).toFixed(2);
+                let total_cost = res.reduce((acc, pre) => {return acc + + parseFloat(pre.total_cost)}, 0).toFixed(2);
+                let total_profit = res.reduce((acc, pre) => {return acc + + parseFloat(pre.profit)}, 0).toFixed(2);
+
+                $('.total').html(`
+                    <tr>
+                        <th colspan="4" class="text-right">Total</th>
+                        <th>${reg_fee}</th>
+                        <th>${driving_fee}</th>
+                        <th>${license_fee}</th>
+                        <th>${transfer_fee}</th>
+                        <th>${total_fee}</th>
+                        <th>${total_cost}</th>
+                        <th>${total_profit}</th>
+                        <th colspan="5"></th>
+                    </tr>
+                `)
             }
         })
     }
