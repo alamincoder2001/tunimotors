@@ -59,7 +59,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-top: 3px;">
+                    <div class="form-group engine_id" style="margin-top: 3px;">
                         <label class="col-sm-4 control-label" for="engine_id"> Product</label>
                         <label class="col-sm-1 control-label">:</label>
                         <div class="col-sm-6">
@@ -219,6 +219,7 @@
                         <th>Registration</th>
                         <th>License</th>
                         <th>Transfer</th>
+                        <th>Description</th>
                         <th class="actions">Action</th>
                     </tr>
                 </thead>
@@ -306,6 +307,7 @@
                             <td>${value.registration_dc_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
                             <td>${value.bike_lr_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
                             <td>${value.bike_nt_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
+                            <td>${value.description}</td>
                             <td>
                                 <div class="hidden-sm hidden-xs action-buttons">
                                     <a class="green  fancybox fancybox.ajax" href="<?php echo base_url() ?>editRegStatement/${value.reg_id}">
@@ -326,8 +328,9 @@
     function getAllReg() {
         $.ajax({
             url: "<?= base_url(); ?>get_all_reg_statement",
-            method: "GET",
+            method: "POST",
             dataType: "JSON",
+            data: {id: ''},
             beforeSend: () => {
                 $(".showResult").html("");
             },
@@ -371,26 +374,31 @@
             return
         }
         if (customerId == 0) {
+            customerId = "";
             $("#newCustomer").show();
         } else {
             $("#newCustomer").hide();
         }
 
         $.ajax({
-            url: location.origin + "/get_customer_ways_products",
+            url: "/get_customer_ways_products",
             method: "POST",
             dataType: 'JSON',
             data: {
                 customerId: customerId
             },
             success: data => {
-                var options = '';
-                options += `  <option value="0" >Select Product</option>`;
-                $.each(data, (index, value) => {
-                    options += `
-                    <option value="${value.engine_id}">${value.Product_Name}-${value.EngineNo}</option>`;
-                })
-                $('#engine_id').html(options);
+                if (data.length > 0 && customerId != '') {
+                    var options = '';
+                    options += `  <option value="0" >Select Product</option>`;
+                    $.each(data, (index, value) => {
+                        options += `
+                        <option value="${value.engine_id}">${value.Product_Name}-${value.EngineNo}</option>`;
+                    })
+                    $('#engine_id').html(options);
+                }else{
+                    $('.engine_id').css({display: 'none'});
+                }
             }
         });
     }
@@ -418,7 +426,6 @@
     }
 
     function InsertBill() {
-        var isvalid = validationCheck();
         var g = $("#ValidateForm").serialize();
         $("#ValidateForm").serialize();
         $.ajax({

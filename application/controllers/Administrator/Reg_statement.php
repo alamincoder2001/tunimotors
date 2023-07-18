@@ -99,7 +99,7 @@ class Reg_statement extends CI_Controller
 			unset($attr['Customer_Address']);
 
 			$reg = array(
-				"engine_id"            => $attr['engine_id'],
+				"engine_id"            => isset($attr['engine_id']) ? $attr['engine_id']: 0,
 				"date"                 => $attr['date'],
 				// "product_id"           => $attr['product_id'],
 				"customer_id"          => $attr['customer_id'],
@@ -210,14 +210,21 @@ class Reg_statement extends CI_Controller
 
 	public function get_all_reg_statement()
 	{
+		$data = json_decode($this->input->raw_input_stream);
+		// echo json_encode($data);
+		// exit;
+		$clauses = "";
+		if (isset($data->dateFrom) && $data->dateFrom != '') {
+			$clauses .= "and eg.date between '$data->dateFrom' and '$data->dateTo'";
+		}
 		$query = $this->db->query("SELECT 
 								p.Product_SlNo,
-								p.Product_Name,
-								e.EngineNo,
+								ifnull(p.Product_Name, 'n/a') as Product_Name,
+								ifnull(e.EngineNo, 'n/a') as EngineNo,
 								e.engine_id,
 								c.Customer_Name,
 								c.Customer_SlNo,
-								e.chassisNo,
+								ifnull(e.chassisNo, 'n/a') chassisNo,
 								eg.*,
     							(SELECT eg.reg_fee+eg.driving_fee+eg.license_fee+eg.transfer_fee) as total_fee,
     							(SELECT eg.reg_cost+eg.driving_cost+eg.license_cost+eg.transfer_cost) as total_cost,
@@ -226,7 +233,7 @@ class Reg_statement extends CI_Controller
 								left join tbl_customer c on c.Customer_SlNo = eg.customer_id
 								left join tbl_engine e on e.engine_id = eg.engine_id
 								left join tbl_product p on p.Product_SlNo = e.productId
-								where eg.status = 'a'
+								where eg.status = 'a' $clauses
 							")->result();
 
 

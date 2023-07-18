@@ -16,8 +16,8 @@
         p.Product_Name,
         e.EngineNo
     from tbl_reg_statement rs
-    INNER join tbl_customer c on c.Customer_SlNo = rs.customer_id
-    INNER JOIN tbl_engine e on e.engine_id = rs.engine_id
+    left join tbl_customer c on c.Customer_SlNo = rs.customer_id
+    left JOIN tbl_engine e on e.engine_id = rs.engine_id
     left join tbl_product p on p.Product_SlNo = e.productId
     where rs.status ='a' 
     and rs.reg_id = ?
@@ -53,7 +53,6 @@
                         <label class="col-sm-4 control-label" for="cus_name"> Product</label>
                         <label class="col-sm-1 control-label">:</label>
                         <div class="col-sm-6">
-                          
                             <select class="form-control" name="product_id" value="<?php echo $edit->product_id;?>"  required class="chosen-select form-control">
                                <option value="<?php echo $edit->product_id;?>"><?php echo $name->Product_Name; echo'-'; echo $name->EngineNo; ?></option>
                             </select>

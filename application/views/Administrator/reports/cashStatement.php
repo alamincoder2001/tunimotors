@@ -2,39 +2,40 @@
 	#cashStatement .buttons {
 		margin-top: -5px;
 	}
-	.account-section{
-        display: flex;
-        border: none;
-        border-radius: 5px;
-        overflow:hidden;
-        margin-bottom: 20px;
-    }
 
-    .account-section h3{
-        margin: 10px 0;
-        padding: 0;
-    }
+	.account-section {
+		display: flex;
+		border: none;
+		border-radius: 5px;
+		overflow: hidden;
+		margin-bottom: 20px;
+	}
 
-	.account-section h4{
+	.account-section h3 {
+		margin: 10px 0;
+		padding: 0;
+	}
+
+	.account-section h4 {
 		margin: 0;
 		margin-top: 3px;
 	}
 
-    .account-section .col1{
-        background-color: #82a253;
-        color: white;
-        flex: 1;
+	.account-section .col1 {
+		background-color: #82a253;
+		color: white;
+		flex: 1;
 		text-align: center;
 		padding: 10px;
-    }
-    .account-section .col2{
-        background-color: #edf3e2;
-        flex: 2;
-        padding: 10px;
-        align-items: center; 
-        text-align:center;
-    }
+	}
 
+	.account-section .col2 {
+		background-color: #edf3e2;
+		flex: 2;
+		padding: 10px;
+		align-items: center;
+		text-align: center;
+	}
 </style>
 <div id="cashStatement">
 	<div class="row" style="border-bottom: 1px solid #ccc;">
@@ -71,8 +72,8 @@
 						<h4>Cash In</h4>
 					</div>
 					<div class="col2">
-						<h3 v-if="totalCashIn == 0"><?php echo $this->session->userdata('Currency_Name');?> 0.00</h3>
-						<h3 style="display:none;" v-bind:style="{display: totalCashIn > 0 ? '' : 'none'}"><?php echo $this->session->userdata('Currency_Name');?> {{ totalCashIn | decimal }}</h3>
+						<h3 v-if="totalCashIn == 0"><?php echo $this->session->userdata('Currency_Name'); ?> 0.00</h3>
+						<h3 style="display:none;" v-bind:style="{display: totalCashIn > 0 ? '' : 'none'}"><?php echo $this->session->userdata('Currency_Name'); ?> {{ totalCashIn | decimal }}</h3>
 					</div>
 				</div>
 			</div>
@@ -83,8 +84,8 @@
 						<h4>Cash Out</h4>
 					</div>
 					<div class="col2">
-						<h3 v-if="totalCashOut == 0"><?php echo $this->session->userdata('Currency_Name');?> 0.00</h3>
-						<h3 style="display:none;" v-bind:style="{display: totalCashOut > 0 ? '' : 'none'}"><?php echo $this->session->userdata('Currency_Name');?> {{ totalCashOut | decimal }}</h3>
+						<h3 v-if="totalCashOut == 0"><?php echo $this->session->userdata('Currency_Name'); ?> 0.00</h3>
+						<h3 style="display:none;" v-bind:style="{display: totalCashOut > 0 ? '' : 'none'}"><?php echo $this->session->userdata('Currency_Name'); ?> {{ totalCashOut | decimal }}</h3>
 					</div>
 				</div>
 			</div>
@@ -95,8 +96,8 @@
 						<h4>Balance</h4>
 					</div>
 					<div class="col2">
-						<h3 v-if="cashBalance == 0"><?php echo $this->session->userdata('Currency_Name');?> 0.00</h3>
-						<h3 style="display:none;" v-bind:style="{display: cashBalance == 0 ? 'none' : ''}"><?php echo $this->session->userdata('Currency_Name');?> {{ cashBalance | decimal }}</h3>
+						<h3 v-if="cashBalance == 0"><?php echo $this->session->userdata('Currency_Name'); ?> 0.00</h3>
+						<h3 style="display:none;" v-bind:style="{display: cashBalance == 0 ? 'none' : ''}"><?php echo $this->session->userdata('Currency_Name'); ?> {{ cashBalance | decimal }}</h3>
 					</div>
 				</div>
 			</div>
@@ -339,6 +340,40 @@
 						</tr>
 					</tfoot>
 				</table>
+
+				<!-- Registraion Received -->
+				<table class="table table-bordered table-condensed">
+					<thead>
+						<tr style="background: #dee4dc;">
+							<th colspan="6">Registration Received</th>
+						</tr>
+						<tr>
+							<th>Sl</th>
+							<th>Date</th>
+							<th>Customer Name</th>
+							<th>Engine & Chassis No</th>
+							<th>Received</th>
+						</tr>
+					</thead>
+					<tbody style="display:none;" v-bind:style="{display: regReceived.length > 0 ? '' : 'none'}">
+						<tr v-for="regpay in regReceived">
+							<td>{{ regpay.reg_id }}</td>
+							<td>{{ regpay.date }}</td>
+							<td>{{ regpay.Customer_Name }}</td>
+							<td>{{ regpay.EngineNo }}-{{regpay.chassisNo}}</td>
+							<td style="text-align:right;">{{ regpay.total_fee | decimal }}</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr style="font-weight:bold;">
+							<td colspan="4" style="text-align:right">Total</td>
+							<td style="text-align:right;">
+								<span v-if="regReceived.length == 0">0.00</span>
+								<span style="display:none;" v-bind:style="{display: regReceived.length > 0 ? '' : 'none'}">{{ totalRegReceived | decimal }}</span>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
 			</div>
 			<div class="col-md-6">
 				<!-- Purchase -->
@@ -575,6 +610,40 @@
 						</tr>
 					</tfoot>
 				</table>
+
+				<!-- Registraion Payments -->
+				<table class="table table-bordered table-condensed">
+					<thead>
+						<tr style="background: #dee4dc;">
+							<th colspan="6">Registration Payment</th>
+						</tr>
+						<tr>
+							<th>Sl</th>
+							<th>Date</th>
+							<th>Customer Name</th>
+							<th>Engine & Chassis No</th>
+							<th>Payment</th>
+						</tr>
+					</thead>
+					<tbody style="display:none;" v-bind:style="{display: regPayments.length > 0 ? '' : 'none'}">
+						<tr v-for="regpay in regPayments">
+							<td>{{ regpay.reg_id }}</td>
+							<td>{{ regpay.date }}</td>
+							<td>{{ regpay.Customer_Name }}</td>
+							<td>{{ regpay.EngineNo }}-{{regpay.chassisNo}}</td>
+							<td style="text-align:right;">{{ regpay.total_cost | decimal }}</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr style="font-weight:bold;">
+							<td colspan="4" style="text-align:right">Total</td>
+							<td style="text-align:right;">
+								<span v-if="regPayments.length == 0">0.00</span>
+								<span style="display:none;" v-bind:style="{display: regPayments.length > 0 ? '' : 'none'}">{{ totalRegPayment | decimal }}</span>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -606,6 +675,8 @@
 				employeePayments: [],
 				loanReceives: [],
 				loanPayments: [],
+				regPayments: [],
+				regReceived: [],
 				loanInitials: [],
 			}
 		},
@@ -665,50 +736,63 @@
 					return prev + parseFloat(curr.amount)
 				}, 0).toFixed(2);
 			},
-			totalEmployeePayments(){
+			totalEmployeePayments() {
 				return this.employeePayments.reduce((prev, curr) => {
 					return prev + parseFloat(curr.payment_amount)
 				}, 0).toFixed(2);
 			},
-			totalInitialLoan(){
+			totalInitialLoan() {
 				return this.loanInitials.reduce((prev, curr) => {
 					return prev + parseFloat(curr.initial_balance)
 				}, 0).toFixed(2);
 			},
-			totalCashIn(){
-				return parseFloat(this.totalSales) + 
-					parseFloat(this.totalReceivedFromCustomers) + 
-					parseFloat(this.totalReceivedFromSuppliers) + 
-					parseFloat(this.totalCashReceived) + 
-					parseFloat(this.totalLoanReceived) + 
-					parseFloat(this.totalInitialLoan) + 
-					parseFloat(this.totalBankWithdraw);
+			totalCashIn() {
+				return parseFloat(this.totalSales) +
+					parseFloat(this.totalReceivedFromCustomers) +
+					parseFloat(this.totalReceivedFromSuppliers) +
+					parseFloat(this.totalCashReceived) +
+					parseFloat(this.totalLoanReceived) +
+					parseFloat(this.totalInitialLoan) +
+					parseFloat(this.totalBankWithdraw) +
+					parseFloat(this.totalRegReceived);
 			},
-			totalCashOut(){
+			totalCashOut() {
 				return parseFloat(this.totalPurchase) +
 					parseFloat(this.totalPaidToCustomers) +
 					parseFloat(this.totalPaidToSuppliers) +
 					parseFloat(this.totalCashPaid) +
 					parseFloat(this.totalLoanPayment) +
 					parseFloat(this.totalBankDeposit) +
-					parseFloat(this.totalEmployeePayments);
+					parseFloat(this.totalEmployeePayments)+
+					parseFloat(this.totalRegPayment);
+
 			},
-			cashBalance(){
-				return parseFloat(this.totalCashIn) -  parseFloat(this.totalCashOut);
+			cashBalance() {
+				return parseFloat(this.totalCashIn) - parseFloat(this.totalCashOut);
 			},
 			totalLoanReceived() {
 				return this.loanReceives.reduce((prev, curr) => {
 					return prev + parseFloat(curr.amount)
 				}, 0).toFixed(2);
 			},
-			
+
 			totalLoanPayment() {
 				return this.loanPayments.reduce((prev, curr) => {
 					return prev + parseFloat(curr.amount)
 				}, 0).toFixed(2);
-			},			
+			},
+			totalRegPayment() {
+				return this.regPayments.reduce((prev, curr) => {
+					return prev + parseFloat(curr.total_cost)
+				}, 0).toFixed(2);
+			},
+			totalRegReceived() {
+				return this.regReceived.reduce((prev, curr) => {
+					return prev + parseFloat(curr.total_fee)
+				}, 0).toFixed(2);
+			},
 		},
-		created(){
+		created() {
 			this.getStatements();
 		},
 		methods: {
@@ -726,6 +810,8 @@
 				this.getEmployeePayments();
 				this.getLoanReceived();
 				this.getLoanPayments();
+				this.getRegistrationPayment();
+				this.getRegistrationReceived();
 			},
 
 			getSales() {
@@ -838,11 +924,11 @@
 					})
 			},
 
-			getEmployeePayments(){
+			getEmployeePayments() {
 				axios.post('/get_employee_payments', this.filter)
-				.then(res => { 
-					this.employeePayments = res.data;
-				})
+					.then(res => {
+						this.employeePayments = res.data;
+					})
 			},
 
 			async getLoanReceived() {
@@ -873,7 +959,28 @@
 					})
 			},
 
-			async print(){
+			getRegistrationPayment() {
+				let filter = {
+					dateFrom: this.filter.dateFrom,
+					dateTo: this.filter.dateTo,
+				}
+				axios.post('/get_all_reg_statement', filter)
+					.then(res => {
+						this.regPayments = res.data;
+					})
+			},
+			getRegistrationReceived() {
+				let filter = {
+					dateFrom: this.filter.dateFrom,
+					dateTo: this.filter.dateTo,
+				}
+				axios.post('/get_all_reg_statement', filter)
+					.then(res => {
+						this.regReceived = res.data;
+					})
+			},
+
+			async print() {
 				let printContent = `
 					<div class="container">
 						<h4 style="text-align:center">Cash Statements</h4 style="text-align:center">
@@ -890,7 +997,7 @@
 
 				var printWindow = window.open('', 'PRINT', `width=${screen.width}, height=${screen.height}`);
 				printWindow.document.write(`
-					<?php $this->load->view('Administrator/reports/reportHeader.php');?>
+					<?php $this->load->view('Administrator/reports/reportHeader.php'); ?>
 				`);
 
 				printWindow.document.body.innerHTML += printContent;
