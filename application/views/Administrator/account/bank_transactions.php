@@ -68,7 +68,7 @@
                             <div class="form-group">
                                 <label for="" class="control-label col-md-4">Transaction Date</label>
                                 <div class="col-md-8">
-                                    <input type="date" class="form-control" v-model="transaction.transaction_date" required @change="getTransactions">
+                                    <input type="date" class="form-control" v-model="transaction.transaction_date" <?php echo $this->session->userdata('accountType') == 'u' ? 'disabled':'';  ?> @change="getTransactions">
                                 </div>
                             </div>
 

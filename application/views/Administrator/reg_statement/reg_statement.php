@@ -22,7 +22,7 @@
                         <label class="col-sm-4 control-label" for="date"> Date </label>
                         <label class="col-sm-1 control-label">:</label>
                         <div class="col-sm-6">
-                            <input type="text" name="date" id="date" class="form-control date-picker" data-date-format="yyyy-mm-dd" reaDOnly value="<?php echo date('Y-m-d'); ?>" />
+                            <input type="text" name="date" id="date" class="form-control date-picker" data-date-format="yyyy-mm-dd" <?php echo $this->session->userdata('accountType') == 'u' ? 'disabled':'';  ?> value="<?php echo date('Y-m-d'); ?>" />
                         </div>
                     </div>
 
@@ -373,7 +373,7 @@
 
                 $('.total').html(`
                     <tr>
-                        <th colspan="4" class="text-right">Total</th>
+                        <th colspan="5" class="text-right">Total</th>
                         <th>${reg_fee}</th>
                         <th>${driving_fee}</th>
                         <th>${license_fee}</th>
