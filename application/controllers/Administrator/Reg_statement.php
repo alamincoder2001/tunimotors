@@ -246,19 +246,11 @@ class Reg_statement extends CI_Controller
 		$data = $this->Reg_statement_model->get_search_reg_statement($type, $sDate, $eDate);
 
 		echo json_encode($data);
-
-		// if ($this->Reg_statement_model->get_search_reg_statement($type, $sDate, $eDate)) {
-		// 	$data['getData'] = $this->Reg_statement_model->get_search_reg_statement($type, $sDate, $eDate);
-		// 	$data['getDataTotal'] = $this->Reg_statement_model->get_search_reg_total($type, $sDate, $eDate);
-		// 	$this->load->view('Administrator/reg_statement/reg_search', $data);
-		// }
 	}
 
 	public function get_all_reg_statement()
 	{
 		$data = json_decode($this->input->raw_input_stream);
-		// echo json_encode($data);
-		// exit;
 		$clauses = "";
 		if (isset($data->dateFrom) && $data->dateFrom != '') {
 			$clauses .= "and eg.date between '$data->dateFrom' and '$data->dateTo'";
