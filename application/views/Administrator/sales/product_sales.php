@@ -38,35 +38,35 @@
 	<div class="col-xs-12 col-md-12 col-lg-12" style="border-bottom:1px #ccc solid;margin-bottom:5px;">
 		<div class="row">
 			<div class="form-group">
-				<label class="col-sm-1 control-label no-padding-right"> Invoice no </label>
-				<div class="col-sm-2">
+				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Invoice no </label>
+				<div class="col-md-2 col-xs-8">
 					<input type="text" id="invoiceNo" class="form-control" v-model="sales.invoiceNo" readonly />
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="col-sm-1 control-label no-padding-right"> Sales By </label>
-				<div class="col-sm-2">
+				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Sales By </label>
+				<div class="col-md-2 col-xs-8">
 					<v-select v-bind:options="employees" v-model="selectedEmployee" label="Employee_Name" placeholder="Select Employee"></v-select>
 				</div>
 			</div>
 
 			<div class="form-group" style="display: none;">
-				<label class="col-sm-1 control-label no-padding-right"> Sales From </label>
-				<div class="col-sm-2">
+				<label class="col-md-1 col-xs-4 control-label no-padding-right"> Sales From </label>
+				<div class="col-md-2 col-xs-8">
 					<v-select id="branchDropdown" v-bind:options="branches" label="Brunch_name" v-model="selectedBranch" disabled></v-select>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="col-sm-1 control-label no-padding-right" style="padding-left: 0px;"> Due Reminder </label>
-				<div class="col-sm-2">
-					<input class="form-control" id="salesDate" type="date" v-model="sales.due_reminder_date" v-bind:disabled="userType == 'u' ? true : false"/>
+				<label class="col-md-1 col-xs-4 control-label no-padding-right" style="padding-left: 0px;"> Due Reminder </label>
+				<div class="col-md-2 col-xs-8">
+					<input class="form-control" id="salesDate" type="date" v-model="sales.due_reminder_date"/>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<div class="col-sm-3">
+				<div class="col-md-3 col-xs-12">
 					<input class="form-control" id="salesDate" type="date" v-model="sales.salesDate" v-bind:disabled="userType == 'u' ? true : false"/>
 				</div>
 			</div>
@@ -74,7 +74,7 @@
 	</div>
 
 
-	<div class="col-xs-9 col-md-9 col-lg-9">
+	<div class="col-xs-12 col-md-9 col-lg-9">
 		<div class="widget-box">
 			<div class="widget-header">
 				<h4 class="widget-title">Sales Information</h4>
@@ -93,34 +93,34 @@
 				<div class="widget-main">
 
 					<div class="row">
-						<div class="col-sm-5">
+						<div class="col-md-5 col-xs-12">
 							<div class="form-group clearfix" style="margin-bottom: 8px;">
-								<label class="col-sm-4 control-label no-padding-right"> Sales Type </label>
-								<div class="col-sm-8">
+								<label class="col-xs-4 control-label no-padding-right"> Sales Type </label>
+								<div class="col-xs-8">
 									<input type="radio" name="salesType" value="retail" v-model="sales.salesType" v-on:change="onSalesTypeChange"> Retail &nbsp;
 									<input type="radio" name="salesType" value="wholesale" v-model="sales.salesType" v-on:change="onSalesTypeChange"> Wholesale
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label no-padding-right"> Customer </label>
-								<div class="col-sm-7">
+								<label class="col-xs-4 control-label no-padding-right"> Customer </label>
+								<div class="col-xs-7">
 									<v-select v-bind:options="customers" label="display_name" v-model="selectedCustomer" v-on:input="customerOnChange"></v-select>
 								</div>
-								<div class="col-sm-1" style="padding: 0;">
+								<div class="col-xs-1" style="padding: 0;">
 									<a href="<?= base_url('customer')?>" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank" title="Add New Customer"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
 								</div>
 							</div>
 
 							<div class="form-group" style="display:none;" v-bind:style="{display: selectedCustomer.Customer_Type == 'G' ? '' : 'none'}">
-								<label class="col-sm-4 control-label no-padding-right"> Name </label>
-								<div class="col-sm-8">
+								<label class="col-xs-4 control-label no-padding-right"> Name </label>
+								<div class="col-xs-8">
 									<input type="text" id="customerName" placeholder="Customer Name" class="form-control" v-model="selectedCustomer.Customer_Name" v-bind:disabled="selectedCustomer.Customer_Type == 'G' ? false : true" />
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-sm-4 control-label no-padding-right"> Mobile No </label>
-								<div class="col-sm-8">
+								<label class="col-xs-4 control-label no-padding-right"> Mobile No </label>
+								<div class="col-xs-8">
 									<input type="text" id="mobileNo" placeholder="Mobile No" class="form-control" v-model="selectedCustomer.Customer_Mobile" v-bind:disabled="selectedCustomer.Customer_Type == 'G' ? false : true" />
 								</div>
 							</div>
@@ -133,67 +133,67 @@
 							</div>
 						</div>
 
-						<div class="col-sm-5">
+						<div class="col-xs-12 col-md-5">
 							<form v-on:submit.prevent="addToCart">
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"> Product </label>
-									<div class="col-sm-8">
+									<label class="col-xs-3 control-label no-padding-right"> Product </label>
+									<div class="col-xs-8">
 										<v-select v-bind:options="products" v-model="selectedProduct" label="display_text" v-on:input="productOnChange"></v-select>
 									</div>
-									<div class="col-sm-1" style="padding: 0;">
+									<div class="col-xs-1" style="padding: 0;">
 										<a href="<?= base_url('product')?>" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank" title="Add New Product"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right">E & C No: </label>
-									<div class="col-sm-9">
+									<label class="col-xs-3 control-label no-padding-right">E & C No: </label>
+									<div class="col-xs-9">
 										<v-select v-bind:options="EnginNumber" v-model="selectEnginNo" label="display_text"  ></v-select>
 									</div>
 								</div>
 
 								<div class="form-group" style="display: none;">
-									<label class="col-sm-3 control-label no-padding-right"> Brand </label>
-									<div class="col-sm-9">
+									<label class="col-xs-3 control-label no-padding-right"> Brand </label>
+									<div class="col-xs-9">
 										<input type="text" id="brand" placeholder="Group" class="form-control" />
 									</div>
 								</div>
 
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"> Sale Rate </label>
-									<div class="col-sm-9">
+									<label class="col-xs-3 control-label no-padding-right"> Sale Rate </label>
+									<div class="col-xs-9">
 										<input type="number" id="salesRate" placeholder="Rate" step="0.01" class="form-control" v-model="selectedProduct.Product_SellingPrice" v-on:input="productTotal"/>
 									</div>
 								</div>
 								<div class="form-group" style="display: none;">
-									<label class="col-sm-3 control-label no-padding-right"> Quantity </label>
-									<div class="col-sm-9">
+									<label class="col-xs-3 control-label no-padding-right"> Quantity </label>
+									<div class="col-xs-9">
 										<input type="number" step="0.01" id="quantity" placeholder="Qty" class="form-control"  v-model="selectedProduct.quantity" v-on:input="productTotal"  autocomplete="off" />
 									</div>
 								</div>
 
 								<div class="form-group" >
-									<label class="col-sm-3 control-label no-padding-right">Offer Disc.</label>
-									<div class="col-sm-9">
-										<input type="number" v-model="selectedProduct.productDiscount" v-on:input="productTotal"  class="form-control" style="display: inline-block; " placeholder="Discount" />
+									<label class="col-xs-4 control-label no-padding-right">Offer Disc.</label>
+									<div class="col-xs-8 no-padding-left">
+										<input type="number" v-model="selectedProduct.productDiscount" v-on:input="productTotal"  class="form-control" placeholder="Discount" />
 									</div>
 								</div>
 								<div class="form-group" >
-									<label class="col-sm-3 control-label no-padding-right"> Amount </label>
-									<div class="col-sm-9">
+									<label class="col-xs-3 control-label no-padding-right"> Amount </label>
+									<div class="col-xs-9">
 										<input type="text" id="productTotal" placeholder="Amount" class="form-control" v-model="selectedProduct.total" readonly />
 									</div>
 								</div>
 
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"> </label>
-									<div class="col-sm-9">
+									<label class="col-xs-3 control-label no-padding-right"> </label>
+									<div class="col-xs-9">
 										<button type="submit" class="btn btn-default pull-right">Add to Cart</button>
 									</div>
 								</div>
 							</form>
 
 						</div>
-						<div class="col-sm-2">
+						<div class="col-xs-12 col-md-2">
 							<div style="display:none;" v-bind:style="{display:sales.isService == 'true' ? 'none' : ''}">
 								<div class="text-center" style="display:none;" v-bind:style="{color: productStock > 0 ? 'green' : 'red', display: selectedProduct.Product_SlNo == '' ? 'none' : ''}">{{ productStockText }}</div class="text-center">
 
@@ -258,7 +258,7 @@
 	</div>
 
 
-	<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+	<div class="col-xs-12 col-md-3 col-lg-3">
 		<div class="widget-box">
 			<div class="widget-header">
 				<h4 class="widget-title">Amount Details</h4>
