@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-4 control-label" for="cus_name"> Driving Fee</label>
+                        <label class="col-sm-4 control-label" for="cus_name"> Learner Fee</label>
                         <label class="col-sm-1 control-label">:</label>
                         <div class="col-sm-3">
                             <input type="text" id="amount" required name="driving_fee" value="0" placeholder="Amount" class="form-control" />
@@ -112,6 +112,17 @@
                         <label class="col-sm-1 control-label" for="transfer_cost"> Cost:</label>
                         <div class="col-sm-2">
                             <input type="text" id="transfer_cost" required name="transfer_cost" value="0" placeholder="Amount" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="bsp_fee"> BSP Fee</label>
+                        <label class="col-sm-1 control-label">:</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="bsp_fee" required name="bsp_fee" value="0" placeholder="Amount" class="form-control" />
+                        </div>
+                        <label class="col-sm-1 control-label" for="bsp_cost"> cost:</label>
+                        <div class="col-sm-2">
+                            <input type="text" id="bsp_cost" required name="bsp_cost" value="0" placeholder="Amount" class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -196,41 +207,48 @@
     </div>
     <div class="col-xs-12">
         <div id="printPage">
-            <div class="table-header">
-                Registration Statement Information
-            </div>
-
+            
             <!-- div.table-responsive -->
-            <table class="table table-striped table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>SL.</th>
-                        <th>Customer Name</th>
-                        <th>Product Name</th>
-                        <th>Engine & Chassis No</th>
-                        <th>Registration fee</th>
-                        <th>Driving fee</th>
-                        <th>License fee</th>
-                        <th>Transfer fee</th>
-                        <th>Total fee</th>
-                        <th>Total Cost</th>
-                        <th>Profit</th>
-                        <th>Driving</th>
-                        <th>Registration</th>
-                        <th>License</th>
-                        <th>Transfer</th>
-                        <th>Description</th>
-                        <th class="actions">Action</th>
-                    </tr>
-                </thead>
-
-                <tbody class="showResult">
-                </tbody>
-
-                <tfoot class="total">
-                    
-                </tfoot>
-            </table>
+            <div class="card">
+                <div class="card-header table-header">
+                    Registration Statement Information
+                </div>
+                <div class="card-body" style="overflow-y: auto;">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>SL.</th>
+                                <th style="width: 15%;">Date</th>
+                                <th>Customer Name</th>
+                                <th>Product Name</th>
+                                <th>Engine & Chassis No</th>
+                                <th>Registration fee</th>
+                                <th>Learner fee</th>
+                                <th>License fee</th>
+                                <th>Transfer fee</th>
+                                <th>BSP fee</th>
+                                <th>Total fee</th>
+                                <th>Total Cost</th>
+                                <th>Profit</th>
+                                <th>Learner</th>
+                                <th>Registration</th>
+                                <th>License</th>
+                                <th>Transfer</th>
+                                <th>BSP</th>
+                                <th>Description</th>
+                                <th class="actions">Action</th>
+                            </tr>
+                        </thead>
+        
+                        <tbody class="showResult">
+                        </tbody>
+        
+                        <tfoot class="total">
+                            
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -293,6 +311,7 @@
         var raw = `
                         <tr>
                             <td>${index + 1}</td>
+                            <td>${value.date}</td>
                             <td>${value.Customer_Name}</td>
                             <td>${value.Product_Name}</td>
                             <td>${value.EngineNo}-${value.chassisNo}</td>
@@ -300,6 +319,7 @@
                             <td>${value.driving_fee}</td>
                             <td>${value.license_fee}</td>
                             <td>${value.transfer_fee}</td>
+                            <td>${value.bsp_fee}</td>
                             <td>${value.total_fee}</td>
                             <td>${value.total_cost}</td>
                             <td>${value.profit}</td>
@@ -307,8 +327,10 @@
                             <td>${value.registration_dc_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
                             <td>${value.bike_lr_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
                             <td>${value.bike_nt_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
+                            <td>${value.bike_bs_type ? '<i class=" green ace-icon fa fa-check-circle bigger-130"></i>': ''}</td>
                             <td>${value.description}</td>
                             <td>
+                            <?php if ($this->session->userdata('accountType') != 'u') { ?>
                                 <div class="hidden-sm hidden-xs action-buttons">
                                     <a class="green  fancybox fancybox.ajax" href="<?php echo base_url() ?>editRegStatement/${value.reg_id}">
                                         <i class="ace-icon fa fa-pencil bigger-130"></i>
@@ -318,6 +340,7 @@
                                     </a>
                                 </div>
                             </td>
+                            <?php } ?>
                         </tr>
                     `;
 
@@ -343,6 +366,7 @@
                 let driving_fee = res.reduce((acc, pre) => {return acc + + parseFloat(pre.driving_fee)}, 0).toFixed(2);
                 let license_fee = res.reduce((acc, pre) => {return acc + + parseFloat(pre.license_fee)}, 0).toFixed(2);
                 let transfer_fee = res.reduce((acc, pre) => {return acc + + parseFloat(pre.transfer_fee)}, 0).toFixed(2);
+                let bsp_fee = res.reduce((acc, pre) => {return acc + + parseFloat(pre.bsp_fee)}, 0).toFixed(2);
                 let total_fee = res.reduce((acc, pre) => {return acc + + parseFloat(pre.total_fee)}, 0).toFixed(2);
                 let total_cost = res.reduce((acc, pre) => {return acc + + parseFloat(pre.total_cost)}, 0).toFixed(2);
                 let total_profit = res.reduce((acc, pre) => {return acc + + parseFloat(pre.profit)}, 0).toFixed(2);
@@ -354,6 +378,7 @@
                         <th>${driving_fee}</th>
                         <th>${license_fee}</th>
                         <th>${transfer_fee}</th>
+                        <th>${bsp_fee}</th>
                         <th>${total_fee}</th>
                         <th>${total_cost}</th>
                         <th>${total_profit}</th>

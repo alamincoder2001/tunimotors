@@ -99,9 +99,8 @@ class Reg_statement extends CI_Controller
 			unset($attr['Customer_Address']);
 
 			$reg = array(
-				"engine_id"            => isset($attr['engine_id']) ? $attr['engine_id']: 0,
+				"engine_id"            => isset($attr['engine_id']) ? $attr['engine_id'] : 0,
 				"date"                 => $attr['date'],
-				// "product_id"           => $attr['product_id'],
 				"customer_id"          => $attr['customer_id'],
 				"reg_fee"              => $attr['reg_fee'],
 				"reg_cost"             => $attr['reg_cost'],
@@ -111,11 +110,13 @@ class Reg_statement extends CI_Controller
 				"license_cost"         => $attr['license_cost'],
 				"transfer_fee"         => $attr['transfer_fee'],
 				"transfer_cost"        => $attr['transfer_cost'],
-				"bike_bs_type"         => isset($attr['bike_bs_type'])? $attr['bike_bs_type']:'',
-				"bike_lr_type"         => isset($attr['bike_lr_type'])? $attr['bike_lr_type']:'',
-				"bike_dl_type"         => isset($attr['bike_dl_type'])? $attr['bike_dl_type']:'',
-				"bike_nt_type"         => isset($attr['bike_nt_type'])? $attr['bike_nt_type']:'',
-				"registration_dc_type" => isset($attr['registration_dc_type'])? $attr['registration_dc_type']:'',
+				"bsp_fee"              => $attr['bsp_fee'],
+				"bsp_cost"             => $attr['bsp_cost'],
+				"bike_bs_type"         => isset($attr['bike_bs_type']) ? $attr['bike_bs_type'] : '',
+				"bike_lr_type"         => isset($attr['bike_lr_type']) ? $attr['bike_lr_type'] : '',
+				"bike_dl_type"         => isset($attr['bike_dl_type']) ? $attr['bike_dl_type'] : '',
+				"bike_nt_type"         => isset($attr['bike_nt_type']) ? $attr['bike_nt_type'] : '',
+				"registration_dc_type" => isset($attr['registration_dc_type']) ? $attr['registration_dc_type'] : '',
 				"description"          => $attr['description'],
 				"addby"                => $attr['addby'],
 				"status"               => "a",
@@ -158,14 +159,59 @@ class Reg_statement extends CI_Controller
 		$attr = $this->input->post();
 		$id = $this->input->post('reg_id');
 
+		if ($attr['customer_id'] == 0) {
+			$customer = [
+				'Customer_Code'         => $this->mt->generateCustomerCode(),
+				'Customer_Name'         => $attr['Customer_Name'],
+				'Customer_Type'         => 'retail',
+				'Customer_Mobile'       => $attr['Customer_Mobile'],
+				'Customer_Address'      => $attr['Customer_Address'],
+				'Customer_Credit_Limit' => 10000000,
+				'previous_due'          => 0,
+				'status'                => 'a',
+				'AddBy'                 => $this->session->userdata("FullName"),
+				'AddTime'               => date("Y-m-d H:i:s"),
+				'Customer_brunchid'     => $this->session->userdata("BRANCHid"),
+			];
 
-		if ($this->Reg_statement_model->update_data($attr, $id)) :
-			$data['successMsg'] = "Update Successfully!";
-			echo json_encode($data);
-		else :
-			$data['errorMsg'] = "Update Unsuccessfully!";
-			echo json_encode($data);
-		endif;
+			$this->db->insert('tbl_customer', $customer);
+			$attr['customer_id'] = $this->db->insert_id();
+		}
+		unset($attr['Customer_Name']);
+		unset($attr['Customer_Mobile']);
+		unset($attr['Customer_Address']);
+
+		$reg = array(
+			"engine_id"            => isset($attr['engine_id']) ? $attr['engine_id'] : 0,
+			"date"                 => $attr['date'],
+			"customer_id"          => $attr['customer_id'],
+			"reg_fee"              => $attr['reg_fee'],
+			"reg_cost"             => $attr['reg_cost'],
+			"driving_fee"          => $attr['driving_fee'],
+			"driving_cost"         => $attr['driving_cost'],
+			"license_fee"          => $attr['license_fee'],
+			"license_cost"         => $attr['license_cost'],
+			"transfer_fee"         => $attr['transfer_fee'],
+			"transfer_cost"        => $attr['transfer_cost'],
+			"bsp_fee"              => $attr['bsp_fee'],
+			"bsp_cost"             => $attr['bsp_cost'],
+			"bike_bs_type"         => isset($attr['bike_bs_type']) ? $attr['bike_bs_type'] : '',
+			"bike_lr_type"         => isset($attr['bike_lr_type']) ? $attr['bike_lr_type'] : '',
+			"bike_dl_type"         => isset($attr['bike_dl_type']) ? $attr['bike_dl_type'] : '',
+			"bike_nt_type"         => isset($attr['bike_nt_type']) ? $attr['bike_nt_type'] : '',
+			"registration_dc_type" => isset($attr['registration_dc_type']) ? $attr['registration_dc_type'] : '',
+			"description"          => $attr['description'],
+			"addby"                => $attr['addby'],
+			"status"               => "a",
+		);
+
+		$data = $this->db->where('reg_id', $id);
+		$data = $this->db->update("tbl_reg_statement", $reg);
+		if ($data) {
+			echo json_encode(["successMsg" => "Update Successfull"]);
+		} else {
+			echo json_encode(["errorMsg" => "Update Fail"]);
+		}
 	}
 	public function get_reg_statement()
 	{
@@ -198,7 +244,7 @@ class Reg_statement extends CI_Controller
 		$eDate = $this->input->post('eDate');
 
 		$data = $this->Reg_statement_model->get_search_reg_statement($type, $sDate, $eDate);
-		
+
 		echo json_encode($data);
 
 		// if ($this->Reg_statement_model->get_search_reg_statement($type, $sDate, $eDate)) {
@@ -226,8 +272,8 @@ class Reg_statement extends CI_Controller
 								c.Customer_SlNo,
 								ifnull(e.chassisNo, 'n/a') chassisNo,
 								eg.*,
-    							(SELECT eg.reg_fee+eg.driving_fee+eg.license_fee+eg.transfer_fee) as total_fee,
-    							(SELECT eg.reg_cost+eg.driving_cost+eg.license_cost+eg.transfer_cost) as total_cost,
+    							(SELECT eg.reg_fee+eg.driving_fee+eg.license_fee+eg.transfer_fee+eg.bsp_fee) as total_fee,
+    							(SELECT eg.reg_cost+eg.driving_cost+eg.license_cost+eg.transfer_cost+eg.bsp_cost) as total_cost,
     							(select total_fee - total_cost) as profit
 								from tbl_reg_statement eg
 								left join tbl_customer c on c.Customer_SlNo = eg.customer_id
